@@ -7,7 +7,9 @@ En la carpeta scripts estan los archivos "install-docker.sh" y la llave publica 
 ```
 $ ssh-keygen -f ~/.ssh/packer-key -t rsa
 ```
-Este comando generará 2 archivos "packer-key" que contiene la llave privada y "packer-key.pub" que contiene la llave publica. La llave publica sera usado por el archivo "aws-ami.json"
+![Captura de pantalla 2022-05-21 064642](https://user-images.githubusercontent.com/1219281/169650403-b2ef9d1b-5422-4409-94de-81c93514f406.png)
+
+Este comando generará 2 archivos: "packer-key" que contiene la llave privada y "packer-key.pub" que contiene la llave publica. La llave publica sera usado por el archivo "aws-ami.json"
 
 Otro requisito previo es que ya se tenga el codigo AMI que se usara en el archivo "aws-ami.json"
 
