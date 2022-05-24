@@ -1,38 +1,38 @@
 {
 	"variables": {
-		"aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+		"aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}", /*Variables de entorno seteadas en el ambiente*/
 		"aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}"
 	},
 	"builders": [
 		{
-			"type": "amazon-ebs",
-			"access_key": "{{user `aws_access_key`}}",
+			"type": "amazon-ebs", /*Tipo de builder*/
+			"access_key": "{{user `aws_access_key`}}", /*Variables para autenticarse a AWS. Se reutiliza las variables seteadas anteriormente*/
 			"secret_key": "{{user `aws_secret_key`}}",
 			"region": "us-east-2",
-			"source_ami": "codigo AMI ya creado en AWS",
-			"source_ami_filter": {
-				"owners": [ "Es el account ID" ],
-				"most_recent": true
+			"source_ami": "ami-0022f774911c1d690", /*AMI creado - Se debe crear un AMI con el sistema operativo que se quiera*/
+			"source_ami_filter": { /*Valores para identificar el AMI*/
+				"owners": [ "440259353103" ], /*Dueño de las credenciales de AWS. Se decarga en el archivo de credenciales de la cuenta*/
+				"most_recent": true /*Versión más reciente*/
 			},
-			"instance_type": "t2.micro",
-			"ssh_username": "centos",
-			"ami_name": "packer-example {{timestamp}}"
+			"instance_type": "t2.micro", /*Tipo de máquina que se va a utilizar para levantar la configuración*/
+			"ssh_username": "centos", /*Usuario*/
+			"ami_name": "packer-demo {{timestamp}}" /*Nombre del AMI que queremos que construya*/
 		}
 	],
 	"provisioners": [
 		{
-			"type": "file",
-			"source": "./scripts/packer-key.pub",
-			"destination": "~/.ssh/"
+			"type": "file", /*Datos de la llave que creamos*/
+			"source": "./scripts/packer-platzi-key.pub", /*Donde está la llave pública*/
+			"destination": "~/.ssh/" /*Donde se va a colocar en el AMI que se está creando*/
 		},
 		{
-			"type": "shell",
+			"type": "shell",/*Escriba dentro del AMI el archivo para que podamos utilizar para que podamos autenticarnos. Se agrega al archivo de autorizaciones la llave pública para podernos autenticar*/
 			"inline": [
-				"cat ~/.ssh/packer-key.pub >> ~/.ssh/authorized_keys"
+				"cat ~/.ssh/packer-platzi-key.pub >> ~/.ssh/authorized_keys"
 			]
 		},
 		{
-			"type": "shell",
+			"type": "shell", /*Correr el script que instala docker*/
 			"script": "scripts/install-docker.sh"
 		}
 	]
